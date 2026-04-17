@@ -4,7 +4,7 @@ from tqdm import tqdm
 import chromadb
 from config import *
 
-client = chromadb.Client()
+client = chromadb.PersistentClient(path="/home/alex/it/ai_obsidian/chroma_db")
 collection = client.get_or_create_collection("notes")
 
 

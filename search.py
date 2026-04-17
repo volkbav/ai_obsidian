@@ -3,16 +3,16 @@ import requests
 import chromadb
 from config import *
 
-client = chromadb.Client()
+client = chromadb.PersistentClient(path="/home/alex/it/ai_obsidian/chroma_db")
 collection = client.get_or_create_collection("notes")
 
 
 def get_embedding(text):
     response = requests.post(OLLAMA_URL, json={
         "model": MODEL,
-        "input": text
+        "prompt": text  # Изменено с "input" на "prompt"
     })
-    return response.json()["embeddings"][0]
+    return response.json()["embedding"]  # Убран [0], так как embedding уже вектор
 
 
 def search(query):
