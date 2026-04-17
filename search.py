@@ -10,9 +10,9 @@ collection = client.get_or_create_collection("notes")
 def get_embedding(text):
     response = requests.post(OLLAMA_URL, json={
         "model": MODEL,
-        "prompt": text
+        "input": text
     })
-    return response.json()["embedding"]
+    return response.json()["embeddings"][0]
 
 
 def search(query):
