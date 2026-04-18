@@ -13,6 +13,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "chromadb" },
+    { name = "python-dotenv" },
     { name = "requests" },
     { name = "tqdm" },
 ]
@@ -20,6 +21,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "chromadb", specifier = ">=1.5.7" },
+    { name = "python-dotenv", specifier = ">=1.2.2" },
     { name = "requests", specifier = ">=2.33.1" },
     { name = "tqdm", specifier = ">=4.67.3" },
 ]
