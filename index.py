@@ -2,7 +2,16 @@ import os
 import requests
 from tqdm import tqdm
 import chromadb
-from config import *
+from dotenv import load_dotenv
+
+load_dotenv()
+
+VAULT_PATH = os.getenv('VAULT_PATH')
+CHUNK_SIZE = int(os.getenv('CHUNK_SIZE'))
+CHUNK_OVERLAP = int(os.getenv('CHUNK_OVERLAP'))
+OLLAMA_URL = os.getenv('OLLAMA_URL')
+MODEL = os.getenv('MODEL')
+
 
 client = chromadb.PersistentClient(path="/home/alex/it/ai_obsidian/chroma_db")
 collection = client.get_or_create_collection("notes")

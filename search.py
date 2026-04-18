@@ -2,8 +2,12 @@ import sys
 import requests
 import chromadb
 from config import *
+from index import (
+    OLLAMA_URL,
+    MODEL
+)
 
-client = chromadb.PersistentClient(path="/home/alex/it/ai_obsidian/chroma_db")
+client = chromadb.PersistentClient(path="./chroma_db")
 collection = client.get_or_create_collection("notes")
 
 
