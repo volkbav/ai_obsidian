@@ -12,3 +12,5 @@ wheels/
 
 # Data base
 chroma_db/
+
+.env
