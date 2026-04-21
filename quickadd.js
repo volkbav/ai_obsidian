@@ -6,9 +6,10 @@ module.exports = async (params) => {
 
     try {
         const vaultPath = app.vault.adapter.basePath;
+        const safeQuery = query.replace(/"/g, '\\"');
 
         const result = execSync(
-            `python search.py "${query}"`,
+            `python search.py "${safeQuery}"`,
             {
                 encoding: "utf-8",
                 maxBuffer: 1024 * 1024 * 10,
