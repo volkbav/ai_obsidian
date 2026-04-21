@@ -1,30 +1,18 @@
 const { execSync } = require("child_process");
-const fs = require("fs");
-const path = require("path");
 
 module.exports = async (params) => {
     const query = await params.quickAddApi.inputPrompt("Search notes:");
     if (!query) return;
 
     try {
-        // читаем .env
-        const envPath = "/home/alex/temp/alex-ai/ai_obsidian/.env";  //надо указать путь до проекта
-        const env = fs.readFileSync(envPath, "utf-8");
-
-        const getEnv = (key) => {
-            const match = env.match(new RegExp(`${key}=(.*)`));
-            return match ? match[1].trim() : null;
-        };
-
-        const projectPath = getEnv("PROJECT_PATH");
-        const pythonPath = getEnv("PYTHON_PATH");
+        const vaultPath = app.vault.adapter.basePath;
 
         const result = execSync(
-            `${pythonPath} search.py "${query}"`,
+            `python3 search.py "${query.replace(/"/g, '\\"')}"`,
             {
                 encoding: "utf-8",
-                maxBuffer: 1024 * 1024 * 10,
-                cwd: projectPath
+                cwd: `${vaultPath}/ai_obsidian`,
+                maxBuffer: 1024 * 1024 * 10
             }
         );
 
@@ -44,13 +32,16 @@ module.exports = async (params) => {
 
         const file = await app.vault.create(
             fileName,
-            `# ${fileName}\n\n${result}`
+            `# ${query}\n\n${result}`
         );
 
         await app.workspace.getLeaf().openFile(file);
 
     } catch (error) {
-        new Notice("Search failed");
-        console.error(error);
+        new Notice("Search failed — see console");
+
+        console.log("STDOUT:", error.stdout?.toString());
+        console.log("STDERR:", error.stderr?.toString());
+        console.log(error);
     }
 };
