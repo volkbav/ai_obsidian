@@ -1,6 +1,5 @@
 #!/bin/bash
 
 cd /home/alex/it/ai_obsidian
-source .venv/bin/activate  # если используешь venv (если нет — убери)
 
-python search.py "$1"
+/home/alex/it/ai_obsidian/.venv/bin/python search.py "$1"
