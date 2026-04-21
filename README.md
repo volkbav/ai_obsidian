@@ -39,21 +39,26 @@ CHUNK_OVERLAP=100
 Индексирует все `.md` файлы из вашего vault в ChromaDB:
 
 ```bash
-python index.py
+uv run python3 index.py
 ```
 
-### Поиск
+### Поиск в терминале
 
 Поиск по индексированным заметкам:
 
 ```bash
-python search.py "ваш запрос"
+uv run python3 search.py "ваш запрос"
 ```
 
 Пример:
 ```bash
-python search.py "как настроить Python в VS Code"
+uv run python search.py "как настроить Python в VS Code"
 ```
+
+### Подключение к обсидиан
+- Необходимо установить расширение `QuickAdd`.
+- папку с проектом скопировать в корень папки с заметками
+- добавить в настройках `QuickAdd`: `Choices&Packages` -> `Macro`: в настройках добавить `User Script` - `quickadd` (обсидиан его сам найдет, если проект расположен в хранилище)
 
 ## Архитектура
 
@@ -72,4 +77,4 @@ python search.py "как настроить Python в VS Code"
 
 - Python 3.12+
 - Ollama с установленной моделью эмбеддингов (по умолчанию `nomic-embed-text`)
-- Obsidian vault с заметками
+- Obsidian vault с заметками и плагином QuickAdd
