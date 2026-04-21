@@ -8,7 +8,7 @@ module.exports = async (params) => {
         const vaultPath = app.vault.adapter.basePath;
 
         const result = execSync(
-            `python3 search.py "${query.replace(/"/g, '\\"')}"`,
+            `uv run python search.py "${query.replace(/"/g, '\\"')}"`,
             {
                 encoding: "utf-8",
                 cwd: `${vaultPath}/ai_obsidian`,
