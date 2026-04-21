@@ -1,12 +1,17 @@
 # search.py
+import os
 import sys
 import requests
 import chromadb
-from index import (
-    OLLAMA_URL,
-    MODEL,
-    CHROMA_PATH,
-)
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+OLLAMA_URL = os.getenv('OLLAMA_URL')
+MODEL = os.getenv('MODEL')
+CHROMA_PATH = os.getenv('CHROMA_PATH')
+
 
 client = chromadb.PersistentClient(path=CHROMA_PATH)
 collection = client.get_or_create_collection("notes")
@@ -29,9 +34,20 @@ def search(query):
     )
 
     for doc, meta in zip(results["documents"][0], results["metadatas"][0]):
-        print("\n---")
-        print(meta["path"])
-        print(doc[:300])
+        print("\n---\n")
+        print(format_results(results))
+
+
+def format_results(results):
+    output = []
+
+    for doc, meta in zip(results["documents"][0], results["metadatas"][0]):
+        filename = os.path.basename(meta["path"]).replace(".md", "")
+
+        output.append(f"## [[{filename}]]\n")
+        output.append(doc[:300] + "\n")
+
+    return "\n".join(output)
 
 
 if __name__ == "__main__":
