@@ -7,12 +7,14 @@ module.exports = async (params) => {
     try {
         const vaultPath = app.vault.adapter.basePath;
 
+        const uvPath = "/snap/bin/uv"; // ← ВАЖНО
+
         const result = execSync(
-            `uv run python search.py "${query.replace(/"/g, '\\"')}"`,
+            `${uvPath} run python search.py "${query.replace(/"/g, '\\"')}"`,
             {
                 encoding: "utf-8",
                 cwd: `${vaultPath}/ai_obsidian`,
-                maxBuffer: 1024 * 1024 * 10
+                stdio: "pipe"
             }
         );
 
