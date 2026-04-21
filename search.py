@@ -1,17 +1,14 @@
-# search.py
 import os
 import sys
 import requests
 import chromadb
-
 from dotenv import load_dotenv
 
 load_dotenv()
 
-OLLAMA_URL = os.getenv('OLLAMA_URL')
-MODEL = os.getenv('MODEL')
-CHROMA_PATH = os.getenv('CHROMA_PATH')
-
+OLLAMA_URL = os.getenv("OLLAMA_URL")
+MODEL = os.getenv("MODEL")
+CHROMA_PATH = os.getenv("CHROMA_PATH")
 
 client = chromadb.PersistentClient(path=CHROMA_PATH)
 collection = client.get_or_create_collection("notes")
@@ -20,9 +17,25 @@ collection = client.get_or_create_collection("notes")
 def get_embedding(text):
     response = requests.post(OLLAMA_URL, json={
         "model": MODEL,
-        "prompt": text  # Изменено с "input" на "prompt"
+        "prompt": text
     })
-    return response.json()["embedding"]  # Убран [0], так как embedding уже вектор
+    return response.json()["embedding"]
+
+
+def format_results(results):
+    output = []
+
+    for doc, meta, dist in zip(
+        results["documents"][0],
+        results["metadatas"][0],
+        results["distances"][0]
+    ):
+        filename = os.path.basename(meta["path"]).replace(".md", "")
+
+        output.append(f"## [[{filename}]] (score: {dist:.3f})\n")
+        output.append(doc[:300] + "\n")
+
+    return "\n".join(output)
 
 
 def search(query):
@@ -33,21 +46,11 @@ def search(query):
         n_results=5
     )
 
-    for doc, meta in zip(results["documents"][0], results["metadatas"][0]):
-        print("\n---\n")
-        print(format_results(results))
+    if not results.get("documents") or not results["documents"][0]:
+        print("No results found")
+        return
 
-
-def format_results(results):
-    output = []
-
-    for doc, meta in zip(results["documents"][0], results["metadatas"][0]):
-        filename = os.path.basename(meta["path"]).replace(".md", "")
-
-        output.append(f"## [[{filename}]]\n")
-        output.append(doc[:300] + "\n")
-
-    return "\n".join(output)
+    print(format_results(results))
 
 
 if __name__ == "__main__":
