@@ -1,3 +1,4 @@
+# index.py
 import os
 import requests
 from tqdm import tqdm
@@ -11,9 +12,10 @@ CHUNK_SIZE = int(os.getenv('CHUNK_SIZE'))
 CHUNK_OVERLAP = int(os.getenv('CHUNK_OVERLAP'))
 OLLAMA_URL = os.getenv('OLLAMA_URL')
 MODEL = os.getenv('MODEL')
+CHROMA_PATH = os.getenv('CHROMA_PATH')
 
 
-client = chromadb.PersistentClient(path="/home/alex/it/ai_obsidian/chroma_db")
+client = chromadb.PersistentClient(path=CHROMA_PATH)
 collection = client.get_or_create_collection("notes")
 
 

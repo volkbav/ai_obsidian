@@ -1,3 +1,4 @@
+# main.py
 def main():
     print("Hello from ai-obsidian!")
 
