@@ -14,6 +14,10 @@ OLLAMA_URL = os.getenv("OLLAMA_URL")
 MODEL = os.getenv("MODEL")
 CHROMA_PATH = os.getenv("CHROMA_PATH")
 
+EXCLUDE_DIRS = set(
+    d.strip() for d in os.getenv("EXCLUDE_DIRS", "").split(",") if d.strip()
+)
+
 client = chromadb.PersistentClient(path=CHROMA_PATH)
 collection = client.get_or_create_collection("notes")
 
@@ -46,9 +50,10 @@ def file_hash(content: str) -> str:
 def load_notes():
     notes = []
 
-    for root, _, files in os.walk(VAULT_PATH):
-        if ".obsidian" in root:
-            continue
+    for root, dirs, files in os.walk(VAULT_PATH):
+
+        # 🔥 фильтруем папки ДО обхода
+        dirs[:] = [d for d in dirs if d not in EXCLUDE_DIRS]
 
         for file in files:
             if file.endswith(".md"):
