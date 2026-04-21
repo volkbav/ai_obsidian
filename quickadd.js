@@ -8,7 +8,7 @@ module.exports = async (params) => {
 
     try {
         // читаем .env
-        const envPath = "./.env";  //надо указать путь до проекта
+        const envPath = "./ai_obsidian/.env";  //надо указать путь до проекта
         const env = fs.readFileSync(envPath, "utf-8");
 
         const getEnv = (key) => {
