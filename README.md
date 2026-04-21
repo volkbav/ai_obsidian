@@ -34,6 +34,13 @@ CHUNK_OVERLAP=100
 
 ## Использование
 
+### Проверка Ollama
+- проверка наличия модели
+```bash
+curl http://localhost:11434/api/tags | grep nomic-embed-text
+```
+- если в ответе отсутствует нужная модель - необходимо её установить: [поиск моделей](https://ollama.com/search?c=embedding)
+
 ### Индексация заметок
 
 Индексирует все `.md` файлы из вашего vault в ChromaDB:
