@@ -5,16 +5,11 @@ module.exports = async (params) => {
     if (!query) return;
 
     try {
-        const vaultPath = app.vault.adapter.basePath;
-
-        const python = `${vaultPath}/ai_obsidian/.venv/bin/python`;
-
         const result = execSync(
-            `${python} search.py "${query.replace(/"/g, '\\"')}"`,
+            `/home/alex/sync/obsidian/alex/ai_obsidian/run_search.sh "${query.replace(/"/g, '\\"')}"`,
             {
                 encoding: "utf-8",
-                cwd: `${vaultPath}/ai_obsidian`,
-                maxBuffer: 1024 * 1024 * 10
+                maxBuffer: 10 * 1024 * 1024
             }
         );
 
@@ -39,11 +34,8 @@ module.exports = async (params) => {
 
         await app.workspace.getLeaf().openFile(file);
 
-    } catch (error) {
-        new Notice("Search failed — see console");
-
-        console.log("STDOUT:", error.stdout?.toString());
-        console.log("STDERR:", error.stderr?.toString());
-        console.log(error);
+    } catch (e) {
+        new Notice("Search failed — check console");
+        console.log(e);
     }
 };
