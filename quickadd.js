@@ -7,28 +7,27 @@ module.exports = async (params) => {
     try {
         const vaultPath = app.vault.adapter.basePath;
 
-        const python = `${vaultPath}/ai_obsidian/.venv/bin/python`;
+        const scriptPath = `${vaultPath}/ai_obsidian/run_search.sh`;
 
         const result = execSync(
-            `${python} search.py "${query.replace(/"/g, '\\"')}"`,
+            `"${scriptPath}" "${query.replace(/"/g, '\\"')}"`,
             {
                 encoding: "utf-8",
-                cwd: `${vaultPath}/ai_obsidian`,
-                maxBuffer: 1024 * 1024 * 10
+                maxBuffer: 10 * 1024 * 1024
             }
         );
 
-        const folder = "AI Search";
+        const folder = "AI_Search";
 
         if (!app.vault.getAbstractFileByPath(folder)) {
             await app.vault.createFolder(folder);
         }
 
-        let fileName = `${folder}/AI Search - ${query}.md`;
+        let fileName = `${folder}/AI_Search - ${query}.md`;
         let counter = 1;
 
         while (app.vault.getAbstractFileByPath(fileName)) {
-            fileName = `${folder}/AI Search - ${query} (${counter}).md`;
+            fileName = `${folder}/AI_Search - ${query} (${counter}).md`;
             counter++;
         }
 
@@ -39,11 +38,8 @@ module.exports = async (params) => {
 
         await app.workspace.getLeaf().openFile(file);
 
-    } catch (error) {
-        new Notice("Search failed — see console");
-
-        console.log("STDOUT:", error.stdout?.toString());
-        console.log("STDERR:", error.stderr?.toString());
-        console.log(error);
+    } catch (e) {
+        new Notice("Search failed — check console");
+        console.log(e);
     }
 };
