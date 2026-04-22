@@ -17,17 +17,17 @@ module.exports = async (params) => {
             }
         );
 
-        const folder = "AI Search";
+        const folder = "AI_Search";
 
         if (!app.vault.getAbstractFileByPath(folder)) {
             await app.vault.createFolder(folder);
         }
 
-        let fileName = `${folder}/AI Search - ${query}.md`;
+        let fileName = `${folder}/AI_Search - ${query}.md`;
         let counter = 1;
 
         while (app.vault.getAbstractFileByPath(fileName)) {
-            fileName = `${folder}/AI Search - ${query} (${counter}).md`;
+            fileName = `${folder}/AI_Search - ${query} (${counter}).md`;
             counter++;
         }
 
