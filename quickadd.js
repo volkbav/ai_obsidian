@@ -5,8 +5,12 @@ module.exports = async (params) => {
     if (!query) return;
 
     try {
+        const vaultPath = app.vault.adapter.basePath;
+
+        const scriptPath = `${vaultPath}/ai_obsidian/run_search.sh`;
+
         const result = execSync(
-            `/home/alex/sync/obsidian/alex/ai_obsidian/run_search.sh "${query.replace(/"/g, '\\"')}"`,
+            `"${scriptPath}" "${query.replace(/"/g, '\\"')}"`,
             {
                 encoding: "utf-8",
                 maxBuffer: 10 * 1024 * 1024
