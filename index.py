@@ -94,7 +94,9 @@ def index():
         # 🔥 SKIP IF NOT CHANGED
         if not is_file_changed(path, content_hash):
             continue
-
+        
+        filename = os.path.basename(path).replace(".md", "")
+        
         chunks = chunk_text(content)
 
         for i, chunk in enumerate(chunks):
