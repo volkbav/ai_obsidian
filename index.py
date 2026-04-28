@@ -98,6 +98,8 @@ def index():
         chunks = chunk_text(content)
 
         for i, chunk in enumerate(chunks):
+            chunk = f"{filename}\n\n{chunk}"
+            
             embedding = get_embedding(chunk)
 
             if embedding is None:
